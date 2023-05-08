@@ -1,0 +1,29 @@
+name: grpc
+services:
+  protos:
+    container_name: protos
+    build: ./protos/
+    volumes:
+      - ./protos/dist:/app/dist
+    restart: on-failure
+  client:
+    container_name: client
+    build: ./client/
+    ports:
+      - 3000:80          
+    volumes:
+      - ./protos/dist:/app/lib/protos
+    restart: on-failure
+    depends_on:
+      - protos
+      - server 
+  server:
+    container_name: server
+    build: ./server/
+    ports:
+      - 50051:50051
+    volumes:
+      - ./protos/dist:/app/lib/protos
+    restart: on-failure 
+    depends_on:
+      - protos   
