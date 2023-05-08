@@ -1,13 +1,17 @@
 import grpc from "grpc";
 import { MyServiceService, HelloRequest, HelloResponse } from "./protos/helloworld";
 
+process.on("unhandledRejection", function (e) {
+	process.exit(1);
+});
+
 async function boot() {
 	// Define the service methods
 	const serviceMethods: { [name: string]: grpc.handleUnaryCall<HelloRequest, HelloResponse> } = {
 		hello: (call, callback) => {
 			const response = HelloResponse.create({
 				message: `Hello ${call.request.name}`
-			});			
+			});
 			callback(null, response);
 		}
 	};
@@ -24,4 +28,7 @@ async function boot() {
 	server.start();
 }
 
-boot();
+boot().catch(function (e) {
+	console.log("Boot failure", e);
+	process.exit(1);
+});
