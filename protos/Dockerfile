@@ -5,5 +5,6 @@ COPY package.json /app/package.json
 RUN npm install
 
 COPY src /app/src
+COPY entrypoint.sh /app/entrypoint.sh
 
-CMD ["npm", "run", "build-js"]
+CMD ["/bin/sh", "entrypoint.sh"]
