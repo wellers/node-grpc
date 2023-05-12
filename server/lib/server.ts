@@ -8,7 +8,7 @@ process.on("unhandledRejection", function (e) {
 async function boot() {
 	// Define the service methods
 	const serviceMethods: { [name: string]: grpc.handleUnaryCall<HelloRequest, HelloResponse> } = {
-		hello: (call, callback) => {
+		hello: (call, callback) => {			
 			const response = HelloResponse.create({
 				message: `Hello ${call.request.name}`
 			});
