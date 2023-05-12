@@ -6,4 +6,4 @@ RUN npm install
 
 COPY src /app/src
 
-CMD ["npm", "run", "build"]
+CMD ["npm", "run", "build-js"]

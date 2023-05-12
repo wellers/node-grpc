@@ -6,24 +6,34 @@ services:
     volumes:
       - ./protos/dist:/app/dist
     restart: on-failure
-  client:
-    container_name: client
-    build: ./client/
+  proxy:
+    container_name: envoy
+    build: ./proxy/
     ports:
-      - 3000:80          
-    volumes:
-      - ./protos/dist:/app/lib/protos
+      - 4000:8080    
     restart: on-failure
     depends_on:
       - protos
-      - server 
+      - server  
   server:
     container_name: server
     build: ./server/
     ports:
       - 50051:50051
     volumes:
-      - ./protos/dist:/app/lib/protos
+      - ./protos/dist/js:/app/lib/protos
     restart: on-failure 
     depends_on:
-      - protos   
+      - protos
+  ui:
+    container_name: ui
+    build: ./ui/
+    ports:
+      - 8081:80
+    volumes:
+      - ./protos/dist/web:/app/lib/protos
+    restart: on-failure 
+    depends_on:
+      - protos
+      - server
+      - proxy
