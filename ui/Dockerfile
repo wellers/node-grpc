@@ -20,5 +20,10 @@ COPY public /app/public
 COPY server /app/server
 COPY src /app/src
 
+ARG PROXY_URL
+RUN ["sh", "-c", "touch /app/.env"]
+
+RUN echo "PROXY_URL=$PROXY_URL" >> /app/.env
+
 RUN npm run build
 CMD ["npm", "start"]

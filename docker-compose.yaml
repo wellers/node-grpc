@@ -10,7 +10,10 @@ services:
     container_name: envoy
     build: ./proxy/
     ports:
-      - 4000:8080    
+      - 4000:8080
+    environment:
+      - SOCKET_ADDRESS=192.168.50.101
+      - SOCKET_PORT=50051
     restart: on-failure
     depends_on:
       - protos
@@ -27,7 +30,10 @@ services:
       - protos
   ui:
     container_name: ui
-    build: ./ui/
+    build:
+      context: ./ui/
+      args:
+        - PROXY_URL=http://192.168.50.101:4000
     ports:
       - 8081:80
     volumes:
